@@ -1,0 +1,23 @@
+name: 'React AI Reviewer'
+description: 'AI-powered React Pull Request reviewer based on Vercel best practices'
+author: 'leo'
+inputs:
+  github-token:
+    description: 'GitHub token for posting comments'
+    required: true
+  ai-api-key:
+    description: 'API key for the LLM (OpenAI or Anthropic)'
+    required: true
+  model:
+    description: 'Model to use for review'
+    required: false
+    default: 'gpt-4o'
+outputs:
+  issues-found:
+    description: 'Number of issues found'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+branding:
+  icon: 'check-circle'
+  color: 'blue'
