@@ -3,7 +3,7 @@ import { getChangedReactFiles } from './changed-files';
 import { runEslint } from './eslint-runner';
 import { analyzeAST } from './ast-analyzer';
 import { reviewWithLLM } from './llm-review';
-import { postComments } from './github-comments';
+import { postComments, ReviewComment } from './github-comments';
 
 export interface PipelineOptions {
     githubToken: string;
@@ -23,7 +23,7 @@ export async function runPipeline(options: PipelineOptions): Promise<number> {
     core.info(`Found ${changedFiles.length} changed React files.`);
 
     let totalIssues = 0;
-    const allComments: any[] = [];
+    const allComments: ReviewComment[] = [];
 
     for (const file of changedFiles) {
         core.startGroup(`Analyzing ${file}`);
@@ -40,7 +40,8 @@ export async function runPipeline(options: PipelineOptions): Promise<number> {
         const astFindings = await analyzeAST(file);
 
         if (astFindings.length > 0) {
-            core.info(`AST scanner found ${astFindings.length} suspicious patterns. Invoking LLM...`);
+            const patterns = [...new Set(astFindings.map(f => f.pattern))].join(', ');
+            core.info(`AST scanner found ${astFindings.length} suspicious pattern(s): [${patterns}]. Invoking LLM...`);
             // 4. LLM Review (Conditional)
             const aiReviewFindings = await reviewWithLLM(file, astFindings, options);
             core.info(`LLM confirmed ${aiReviewFindings.length} issues to report.`);

@@ -19,7 +19,7 @@ export async function reviewWithLLM(
     const diff = await getFileDiff(file);
 
     const astContextStr = astFindings.map(f =>
-        `- Line ${f.line}: ${f.message}\n  Snippet: \`${f.snippet}\``
+        `- Line ${f.line} [${f.pattern}]: ${f.message}\n  Snippet: \`${f.code}\``
     ).join('\n');
 
     const userPrompt = reviewPromptTemplate
