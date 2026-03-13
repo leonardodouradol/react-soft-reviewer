@@ -1,14 +1,18 @@
-Review the following React code changes for file: {{FILE_NAME}}
+Review the following React code changes.
+
+File: {{FILE_NAME}}
 
 --- VERCEL REACT BEST PRACTICES ---
 {{BEST_PRACTICES}}
 
---- AST SCANNER CONTEXT ---
+--- AST SCANNER FINDINGS ---
 {{AST_CONTEXT}}
 
 --- GIT DIFF ---
 {{DIFF}}
 
 Instructions:
-Evaluate the diff, taking the AST scanner findings into account. If the AST found an issue that is confirmed by the diff, report it. Look for additional violations of the best practices.
-Output ONLY a strict JSON array.
+1. For each AST finding, check the diff and decide: true positive or false positive?
+2. Look for additional violations not caught by the AST scanner.
+3. Apply the rules from the system prompt strictly.
+4. Return ONLY a valid JSON array. No markdown. No explanation. No code fences.
